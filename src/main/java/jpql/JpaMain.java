@@ -1,6 +1,5 @@
 package jpql;
 
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -20,9 +19,12 @@ public class JpaMain {
             member.setUsername("member1");
             em.persist(member);
 
-            TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
-            List<Member> resultList = query.getResultList();
+            TypedQuery<Member> query = em.createQuery("select m from Member m where m.username = :username", Member.class);
+            query.setParameter("username", "member1");
             Member singleResult = query.getSingleResult();
+
+            System.out.println("singleResult = " + singleResult);
+            System.out.println("singleResult.getUsername() = " + singleResult.getUsername());
 
             tx.commit();
         } catch (Exception e) {
