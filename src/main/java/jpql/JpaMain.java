@@ -21,7 +21,7 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            em.createQuery("select o.address from Order o", Address.class).getResultList();
+            em.createQuery("select distinct m.username, m.age from Member m").getResultList();
 
             tx.commit();
         } catch (Exception e) {
