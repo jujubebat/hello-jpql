@@ -4,7 +4,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.OrderColumn;
 import javax.persistence.Persistence;
 
 public class JpaMain {
@@ -16,43 +15,22 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
+            Member member1 = new Member();
+            member1.setUsername("관리자1");
+            em.persist(member1);
 
-            Member member = new Member();
-            member.setUsername("관리자");
-            member.setAge(10);
-
-            member.setTeam(team);
-
-            em.persist(member);
+            Member member2 = new Member();
+            member2.setUsername("관리자2");
+            em.persist(member2);
 
             em.flush();
             em.clear();
 
-            // String query = "select 'a' || 'b' From Member m";
-            // String query = "select concat('a', 'b') From Member m";
-            // String query = "select substring(m.username, 2, 3) From Member m";
-//            List<String> result = em.createQuery(query, String.class).getResultList();
+            String query = "select function('group_concat', m.username) From Member m";
 
-//            for (String s : result) {
-//                System.out.println("s = " + s);
-//            }
+            List<String> result = em.createQuery(query, String.class).getResultList();
 
-            /*
-            String query = "select size(t.members) From Team t";
-            List<Object> result = em.createQuery(query, Object.class).getResultList();
-
-            for (Object s : result) {
-                System.out.println("s = " + s);
-            }
-            */
-
-            String query = "select locate('de','abcdefg') From Member m";
-            List<Integer> result = em.createQuery(query, Integer.class).getResultList();
-
-            for (Integer s : result) {
+            for (String s : result) {
                 System.out.println("s = " + s);
             }
 
