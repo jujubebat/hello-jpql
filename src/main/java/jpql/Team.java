@@ -19,7 +19,7 @@ public class Team {
     private int age;
 
     @OneToMany(mappedBy = "team")
-    private List<Member> mebers = new ArrayList<>();
+    private List<Member> members = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -43,5 +43,13 @@ public class Team {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public List<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<Member> members) {
+        this.members = members;
     }
 }
