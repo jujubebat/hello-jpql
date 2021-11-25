@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.OrderColumn;
 import javax.persistence.Persistence;
 
 public class JpaMain {
@@ -22,7 +23,6 @@ public class JpaMain {
             Member member = new Member();
             member.setUsername("관리자");
             member.setAge(10);
-            member.setType(MemberType.ADMIN);
 
             member.setTeam(team);
 
@@ -31,12 +31,28 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // 기본 case 식
+            // String query = "select 'a' || 'b' From Member m";
+            // String query = "select concat('a', 'b') From Member m";
+            // String query = "select substring(m.username, 2, 3) From Member m";
+//            List<String> result = em.createQuery(query, String.class).getResultList();
 
-            String query = "select nullif(m.username, '관리자') from Member m ";
-            List<String> result = em.createQuery(query, String.class).getResultList();
+//            for (String s : result) {
+//                System.out.println("s = " + s);
+//            }
 
-            for (String s : result){
+            /*
+            String query = "select size(t.members) From Team t";
+            List<Object> result = em.createQuery(query, Object.class).getResultList();
+
+            for (Object s : result) {
+                System.out.println("s = " + s);
+            }
+            */
+
+            String query = "select locate('de','abcdefg') From Member m";
+            List<Integer> result = em.createQuery(query, Integer.class).getResultList();
+
+            for (Integer s : result) {
                 System.out.println("s = " + s);
             }
 
