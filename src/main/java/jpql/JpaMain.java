@@ -41,14 +41,21 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // String query = "select m From Member m";
-            String query = "select m From Member m join fetch m.team";
+            // String query = "select t From Team t join t.members";
 
-            List<Member> result = em.createQuery(query, Member.class).getResultList();
+            // 일반 조인을 하면, sql 조인 쿼리가 나가긴 하지만, members를 가져오지 않는다.
+            // inner join SQL이 나가긴하지만, Team 엔티티는 조회하지만, 회원 엔티티는 조회하지 않는다!
+            String query = "select t From Team t join fetch t.members";
 
+            List<Team> result = em.createQuery(query, Team.class).getResultList();
 
-            for (Member member : result) {
-                System.out.println("member = " + member.getUsername() + ", " + member.getTeam().getName());
+            System.out.println("result.size() = " + result.size());
+
+            for (Team team : result) {
+                System.out.println("team = " + team.getName() + " | members = " + team.getMembers().size());
+                for(Member member :  team.getMembers()){
+                    System.out.println("-> member = " + member);
+                }
             }
 
             tx.commit();
