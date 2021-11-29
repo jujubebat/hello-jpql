@@ -1,11 +1,11 @@
 package jpql;
 
-import java.awt.MenuBar;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 public class JpaMain {
 
@@ -42,33 +42,11 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // 엔티티로 조회하기
-            /*
-            String query = "select m From Member m where m = :member";
-
-            Member findMember = em.createQuery(query, Member.class)
-                .setParameter("member", member1)
-                .getSingleResult();
-             */
-
-            // 엔티티 프라이머리 키로 조회하기
-            /*
-            String query = "select m From Member m where m.id = :memberId";
-
-            Member findMember = em.createQuery(query, Member.class)
-                .setParameter("memberId", member1.getId())
-                .getSingleResult();
-
-             */
-
-            // 외래 키 값으로 조회하기
-            String query = "select m From Member m where m.team = :team";
-
-            List<Member> members = em.createQuery(query, Member.class)
-                .setParameter("team", teamA)
+            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
+                .setParameter("username", "회원1")
                 .getResultList();
 
-            for (Member member :  members){
+            for (Member member : resultList) {
                 System.out.println("member = " + member);
             }
 
