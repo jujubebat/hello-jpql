@@ -1,5 +1,6 @@
 package jpql;
 
+import java.awt.MenuBar;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -41,21 +42,34 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // String query = "select t From Team t join t.members";
+            // 엔티티로 조회하기
+            /*
+            String query = "select m From Member m where m = :member";
 
-            // 일반 조인을 하면, sql 조인 쿼리가 나가긴 하지만, members를 가져오지 않는다.
-            // inner join SQL이 나가긴하지만, Team 엔티티는 조회하지만, 회원 엔티티는 조회하지 않는다!
-            String query = "select t From Team t join fetch t.members";
+            Member findMember = em.createQuery(query, Member.class)
+                .setParameter("member", member1)
+                .getSingleResult();
+             */
 
-            List<Team> result = em.createQuery(query, Team.class).getResultList();
+            // 엔티티 프라이머리 키로 조회하기
+            /*
+            String query = "select m From Member m where m.id = :memberId";
 
-            System.out.println("result.size() = " + result.size());
+            Member findMember = em.createQuery(query, Member.class)
+                .setParameter("memberId", member1.getId())
+                .getSingleResult();
 
-            for (Team team : result) {
-                System.out.println("team = " + team.getName() + " | members = " + team.getMembers().size());
-                for(Member member :  team.getMembers()){
-                    System.out.println("-> member = " + member);
-                }
+             */
+
+            // 외래 키 값으로 조회하기
+            String query = "select m From Member m where m.team = :team";
+
+            List<Member> members = em.createQuery(query, Member.class)
+                .setParameter("team", teamA)
+                .getResultList();
+
+            for (Member member :  members){
+                System.out.println("member = " + member);
             }
 
             tx.commit();
